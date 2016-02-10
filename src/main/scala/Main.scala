@@ -1,3 +1,4 @@
+package edu.nyu.acm.box
 
 import com.box.sdk._
 import com.typesafe.config.ConfigFactory
@@ -17,8 +18,13 @@ object BoxTransfer extends App {
 	def iterateFS(root: File, boxFolder: BoxFolder) {
 	  root.listFiles.foreach{ obj =>
 	    obj.isFile match {
-	    	case true => { boxFolder.uploadFile(new FileInputStream(obj), obj.getName) }
-	    	case false => { iterateFS(obj, new BoxFolder(api, boxFolder.createFolder(obj.getName).getID)) } 
+	    	case true => { 
+	    		println("* UPLOADING FILE: " + obj.getName)
+	    		boxFolder.uploadFile(new FileInputStream(obj), obj.getName) }
+	    	case false => { 
+	    		println("* CREATING DIRECTORY: " + obj.getName)
+	    		iterateFS(obj, new BoxFolder(api, boxFolder.createFolder(obj.getName).getID)) 
+	    	} 
 	    }
 	  }	
 	}
