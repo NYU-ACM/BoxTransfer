@@ -4,12 +4,12 @@ import com.typesafe.config.ConfigFactory
 import collection.JavaConversions._
 import java.io._
 
-object Main extends App {
+object BoxTransfer extends App {
   
   val conf = ConfigFactory.load() 
-  val api = new BoxAPIConnection(conf.getString("box.key"))
- 	val incoming = new BoxFolder(api, conf.getString("box.incoming"))
- 	val source = new File(args(0))
+  val api = new BoxAPIConnection(args(1))
+  val incoming = new BoxFolder(api, conf.getString("box.incoming"))
+  val source = new File(args(0))
   val boxRoot = incoming.createFolder(source.getName)
 
 	iterateFS(source, new BoxFolder(api, boxRoot.getID))
